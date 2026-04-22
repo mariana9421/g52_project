@@ -16,7 +16,7 @@ class Gclass:
         for i in range(1, len(str_list)):
             strarg += ',str_list[' + str(i) + ']'
         strarg += ')'
-        return eval(strarg)
+        return cls(*str_list)
 
     
     @classmethod
