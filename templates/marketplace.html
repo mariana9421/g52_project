@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<div class="dados">
+    <img
+        src="{{ url_for('static', filename='images/Marketplace.jpg')}}"
+        alt="Marketplace"
+        class="page-image"
+    >
+
+    <h1>Marketplace</h1>
+
+    <br>
+
+    <button id="edit" type="button" {{butshow}} onclick="window.location.href = '/Marketplace?option=edit'" class="button1">Edit</button>
+    <button id="delete" type="button" {{butshow}} onclick="window.location.href = '/Marketplace?option=delete'" class="button1">Delete</button>
+    <button id="insert" type="button" {{butshow}} onclick="window.location.href = '/Marketplace?option=insert'" class="button1">Insert</button>
+    <button id="save" type="submit" form="form" {{butedit}} class="button1">Save</button>
+    <button id="cancel" type="button" {{butedit}} onclick="window.location.href = '/Marketplace?option=cancel'" class="button1">Cancel</button>
+    <button id="exit" type="button" {{butshow}} onclick="window.location.href = '/Marketplace?option=exit'" class="button1">Exit</button>
+
+    <br><br>
+
+    <form id="form" action="/Marketplace?option=guardar" method="post">
+        <label for="id">Id:</label>
+        {% if butedit == 'enabled' %}
+            <input type="text" disabled id="id" name="id" value="{{id}}" size="5"/>
+        {% else %}
+            <input type="text" {{butedit}} id="id" name="id" value="{{id}}" size="10"/>
+        {% endif %}
+
+        <br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" {{butedit}} id="name" name="name" value="{{name}}" size="30"/>
+
+        <br><br>
+
+        <label for="created_date">DoB:</label>
+        <input type="text" {{butedit}} id="created_date" name="created_date" value="{{created_date}}" size="10"/>
+
+        <br><br>
+
+        <label for="category_id">Salary:</label>
+        <input type="text" {{butedit}} id="category_id" name="category_id" value="{{category_id}}" size="10"/>
+    </form>
+
+    <br>
+
+    <button id="first" type="button" {{butshow}} onclick="window.location.href = '/Marketplace?option=first'" class="button1">First</button>
+    <button id="previous" type="button" {{butshow}} onclick="window.location.href = '/Marketplace?option=previous'" class="button1">Previous</button>
+    <button id="next" type="button" {{butshow}} onclick="window.location.href = '/Marketplace?option=next'" class="button1">Next</button>
+    <button id="last" type="button" {{butshow}} onclick="window.location.href = '/Marketplace?option=last'" class="button1">Last</button>
+
+    <br><br><br><br>
+
+    <div style="text-align: center;">
+        <a class="button" href="/">Back</a>
+    </div>
+    <br><br><br>
+    <div style="text-align: center; margin-top: 10px;">
+        <button type="button" class="button1" onclick="toggleData()">
+            Show/Hide Date
+        </button>
+        <p id="dataHoje"></p>
+    </div>
+
+    <script>
+    let visivel = false;
+
+    function toggleData() {
+        const el = document.getElementById("dataHoje");
+
+        if (visivel) {
+            el.innerText = "";
+            visivel = false;
+        } else {
+            const hoje = new Date();
+            el.innerText = hoje.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            visivel = true;
+        }
+    }
+    </script>
+
+    <!-- PAINEL ESQUERDO - WORLD CLOCKS -->
+    <div style="position: fixed; left: 0; top: 50%; transform: translateY(-50%);
+                background: #334a94; color: white; padding: 15px;
+                border-radius: 0 10px 10px 0; width: 180px;">
+
+        <h4>World Clocks</h4>
+
+        <p>Lisbon: <span id="lisboa"></span></p>
+        <p>London: <span id="london"></span></p>
+        <p>New York: <span id="newyork"></span></p>
+        <p>Tokyo: <span id="tokyo"></span></p>
+
+    </div>
+
+    <!-- PAINEL DIREITO - MARKETPLACE INFO -->
+    <div style="position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+                background: #334a94; color: white; padding: 15px;
+                border-radius: 10px 0 0 10px; width: 180px;">
+
+        <h4>Marketplace Info</h4>
+
+        <p>User: {{ ulogin }}</p>
+        <p>Today's Date:</p>
+        <p><span id="today"></span></p>
+
+        <hr>
+
+        <p>Status:</p>
+        <p>Online</p>
+
+    </div>
+
+    <script>
+    function atualizarHoras() {
+
+        const options = {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        };
+
+        document.getElementById("lisboa").innerText =
+            new Date().toLocaleTimeString('pt-PT', {
+                ...options,
+                timeZone: "Europe/Lisbon"
+            });
+
+        document.getElementById("london").innerText =
+            new Date().toLocaleTimeString('en-GB', {
+                ...options,
+                timeZone: "Europe/London"
+            });
+
+        document.getElementById("newyork").innerText =
+            new Date().toLocaleTimeString('en-US', {
+                ...options,
+                timeZone: "America/New_York"
+            });
+
+        document.getElementById("tokyo").innerText =
+            new Date().toLocaleTimeString('en-US', {
+                ...options,
+                timeZone: "Asia/Tokyo"
+            });
+    }
+
+    atualizarHoras();
+    setInterval(atualizarHoras, 1000);
+
+    document.getElementById("today").innerText =
+        new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    </script>
+
+</div>
+
+{% endblock %}

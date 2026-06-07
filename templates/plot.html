@@ -1,0 +1,18 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="dados">
+        <h1>Transactions Plot</h1>
+
+        <img src="data:image/png;base64,{{ image }}" alt="Transactions Plot">
+    </div>
+    <br><br>
+    <div style="text-align: center;">
+        <a class="button" href="/">Back</a></li>
+    </div>
+{% endblock %}
